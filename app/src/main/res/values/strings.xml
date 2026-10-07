@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">VPN Tile</string>
+    <string name="tile_label">VPN</string>
+    <string name="tile_subtitle_connected">Connected</string>
+    <string name="tile_subtitle_off">Off</string>
+    <string name="status_vpn_connected">VPN connected</string>
+    <string name="status_no_vpn">No VPN active</string>
+    <string name="section_quick_settings">Quick Settings</string>
+    <string name="add_tile_title">Add tile to Quick Settings</string>
+    <string name="add_tile_summary">Shows VPN status in your notification shade</string>
+    <string name="section_vpn">VPN</string>
+    <string name="vpn_settings_title">VPN settings</string>
+    <string name="vpn_settings_summary">Manage VPN connections</string>
+    <string name="about_title">About</string>
+    <string name="main_footer">This app can’t turn VPNs on or off. Android only lets VPN apps do that.</string>
+    <string name="tile_add_added">Tile added</string>
+    <string name="tile_add_already_added">Tile is already added</string>
+    <string name="tile_add_not_added">Tile not added</string>
+    <string name="tile_add_error">Couldn’t add tile</string>
+    <string name="back">Back</string>
+    <string name="about_version_author">Version %1$s (%2$d) • %3$s</string>
+    <string name="open_source_libraries">Open Source Libraries</string>
+    <string name="app_icon_content_description">VPN Tile app icon</string>
+</resources>
