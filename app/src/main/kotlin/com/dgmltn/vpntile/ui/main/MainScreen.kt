@@ -31,7 +31,9 @@ import com.dgmltn.vpntile.designsystem.SettingsGroup
 import com.dgmltn.vpntile.designsystem.SettingsItem
 import com.dgmltn.vpntile.designsystem.VpnTileIcon
 import com.dgmltn.vpntile.designsystem.VpnTilePreview
+import com.dgmltn.vpntile.tile.TileAddedStore
 import com.dgmltn.vpntile.tile.TileAdder
+import com.dgmltn.vpntile.tile.meansTileIsAdded
 import com.dgmltn.vpntile.vpn.VpnStatusMonitor
 import com.dgmltn.vpntile.vpn.vpnSettingsIntent
 import kotlinx.coroutines.launch
@@ -40,6 +42,7 @@ import kotlinx.coroutines.launch
 fun MainScreen(
     vpnStatusMonitor: VpnStatusMonitor,
     tileAdder: TileAdder,
+    tileAddedStore: TileAddedStore,
     onOpenAbout: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -47,14 +50,20 @@ fun MainScreen(
     val isVpnActive by vpnStatusMonitor.isVpnActive.collectAsStateWithLifecycle(
         initialValue = remember(vpnStatusMonitor) { vpnStatusMonitor.isVpnActiveNow() },
     )
+    val isTileAdded by tileAddedStore.isAdded.collectAsStateWithLifecycle(
+        initialValue = remember(tileAddedStore) { tileAddedStore.isAddedNow() },
+    )
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
     MainContent(
         isVpnActive = isVpnActive,
+        isTileAdded = isTileAdded,
         snackbarHostState = snackbarHostState,
         onAddTile = {
             scope.launch {
-                val messageRes = tileAdder.requestAdd().messageRes() ?: return@launch
+                val result = tileAdder.requestAdd()
+                if (result.meansTileIsAdded()) tileAddedStore.setAdded(true)
+                val messageRes = result.messageRes() ?: return@launch
                 snackbarHostState.showSnackbar(resources.getString(messageRes))
             }
         },
@@ -67,6 +76,7 @@ fun MainScreen(
 @Composable
 fun MainContent(
     isVpnActive: Boolean,
+    isTileAdded: Boolean,
     snackbarHostState: SnackbarHostState,
     onAddTile: () -> Unit,
     onOpenVpnSettings: () -> Unit,
@@ -104,7 +114,8 @@ fun MainContent(
                 SettingsItem(
                     title = stringResource(R.string.add_tile_title),
                     summary = stringResource(R.string.add_tile_summary),
-                    icon = VpnTileIcon.AddTile,
+                    icon = if (isTileAdded) VpnTileIcon.TileAdded else VpnTileIcon.AddTile,
+                    iconContentDescription = if (isTileAdded) stringResource(R.string.tile_added) else null,
                     onClick = onAddTile,
                 )
             }
@@ -139,6 +150,7 @@ private fun Preview_MainContent_Connected() {
     VpnTilePreview(padding = 0.dp) {
         MainContent(
             isVpnActive = true,
+            isTileAdded = true,
             snackbarHostState = remember { SnackbarHostState() },
             onAddTile = {},
             onOpenVpnSettings = {},
@@ -153,6 +165,7 @@ private fun Preview_MainContent_NoVpn() {
     VpnTilePreview(padding = 0.dp) {
         MainContent(
             isVpnActive = false,
+            isTileAdded = false,
             snackbarHostState = remember { SnackbarHostState() },
             onAddTile = {},
             onOpenVpnSettings = {},

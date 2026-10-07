@@ -5,6 +5,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -27,6 +28,7 @@ class MainContentTest {
 
     private fun show(
         isVpnActive: Boolean = false,
+        isTileAdded: Boolean = false,
         onAddTile: () -> Unit = {},
         onOpenVpnSettings: () -> Unit = {},
         onOpenAbout: () -> Unit = {},
@@ -35,6 +37,7 @@ class MainContentTest {
             VpnTileTheme {
                 MainContent(
                     isVpnActive = isVpnActive,
+                    isTileAdded = isTileAdded,
                     snackbarHostState = remember { SnackbarHostState() },
                     onAddTile = onAddTile,
                     onOpenVpnSettings = onOpenVpnSettings,
@@ -86,5 +89,19 @@ class MainContentTest {
         compose.onNodeWithText(context.getString(R.string.about_title)).performScrollTo().performClick()
 
         assertEquals(1, calls)
+    }
+
+    @Test
+    fun `added tile shows a checkmark`() {
+        show(isTileAdded = true)
+
+        compose.onNodeWithContentDescription(context.getString(R.string.tile_added)).assertExists()
+    }
+
+    @Test
+    fun `tile not yet added shows no checkmark`() {
+        show(isTileAdded = false)
+
+        compose.onNodeWithContentDescription(context.getString(R.string.tile_added)).assertDoesNotExist()
     }
 }

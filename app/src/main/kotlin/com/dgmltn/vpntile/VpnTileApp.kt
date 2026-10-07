@@ -5,6 +5,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
+import com.dgmltn.vpntile.tile.TileAddedStore
 import com.dgmltn.vpntile.tile.TileAdder
 import com.dgmltn.vpntile.ui.about.AboutScreen
 import com.dgmltn.vpntile.ui.main.MainScreen
@@ -18,7 +19,11 @@ data object MainKey : NavKey
 data object AboutKey : NavKey
 
 @Composable
-fun VpnTileApp(vpnStatusMonitor: VpnStatusMonitor, tileAdder: TileAdder) {
+fun VpnTileApp(
+    vpnStatusMonitor: VpnStatusMonitor,
+    tileAdder: TileAdder,
+    tileAddedStore: TileAddedStore,
+) {
     val backStack = rememberNavBackStack(MainKey)
     NavDisplay(
         backStack = backStack,
@@ -28,6 +33,7 @@ fun VpnTileApp(vpnStatusMonitor: VpnStatusMonitor, tileAdder: TileAdder) {
                 MainScreen(
                     vpnStatusMonitor = vpnStatusMonitor,
                     tileAdder = tileAdder,
+                    tileAddedStore = tileAddedStore,
                     onOpenAbout = { backStack.add(AboutKey) },
                 )
             }

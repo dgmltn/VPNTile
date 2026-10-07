@@ -15,11 +15,24 @@ import kotlinx.coroutines.launch
 class VpnTileService : TileService() {
 
     private val vpnStatusMonitor by lazy { VpnStatusMonitor(this) }
+    private val tileAddedStore by lazy { TileAddedStore(this) }
     private val scope = MainScope()
     private var listening: Job? = null
 
+    override fun onTileAdded() {
+        super.onTileAdded()
+        tileAddedStore.setAdded(true)
+    }
+
+    override fun onTileRemoved() {
+        tileAddedStore.setAdded(false)
+        super.onTileRemoved()
+    }
+
     override fun onStartListening() {
         super.onStartListening()
+        // Only a tile that's in Quick Settings is ever bound to listen.
+        tileAddedStore.setAdded(true)
         // The shade may have been closed while the VPN changed, so render before the first callback.
         render(vpnStatusMonitor.isVpnActiveNow())
         listening = scope.launch { vpnStatusMonitor.isVpnActive.collect(::render) }

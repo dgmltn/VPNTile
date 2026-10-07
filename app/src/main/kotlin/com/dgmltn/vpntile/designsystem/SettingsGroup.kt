@@ -59,6 +59,7 @@ fun SettingsItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     summary: String? = null,
+    iconContentDescription: String? = null,
 ) {
     Surface(
         onClick = onClick,
@@ -69,7 +70,7 @@ fun SettingsItem(
         ListItem(
             headlineContent = { Text(title) },
             supportingContent = summary?.let { { Text(it) } },
-            leadingContent = { icon() },
+            leadingContent = { icon(contentDescription = iconContentDescription) },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
         )
     }
