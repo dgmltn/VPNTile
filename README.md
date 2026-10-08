@@ -7,7 +7,9 @@ Android’s VPN settings; long-press it to open the app.
 
 ## Install
 
-Download the latest `VPNTile-<version>.apk` from
+<a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/dgmltn/VPNTile"><img src="resources/badges/badge_obtainium.png" alt="Get it on Obtainium" height="80"></a>
+
+Or download the latest `VPNTile-<version>.apk` from
 [Releases](https://github.com/dgmltn/VPNTile/releases) and open it on your phone.
 Requires Android 13 or newer.
 
