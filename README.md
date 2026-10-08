@@ -3,7 +3,7 @@
 A Quick Settings tile that shows whether a VPN is active, for any VPN app. Tap it to open
 Android’s VPN settings; long-press it to open the app.
 
-<!-- Screenshot: add docs/screenshot.png -->
+<img src="resources/screenshots/screenshot-tile.png" alt="The VPN tile in Quick Settings" width="300">
 
 ## Install
 
