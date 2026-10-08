@@ -1,6 +1,6 @@
 # VPN Tile
 
-A Quick Settings tile that shows whether a VPN is active, for any VPN app. Tap it to open
+Adds a missing Quick Settings tile for VPN status. Tap it to open
 Android’s VPN settings; long-press it to open the app.
 
 <img src="resources/screenshots/screenshot-tile.png" alt="The VPN tile in Quick Settings" width="300">
@@ -29,25 +29,6 @@ Needs JDK 21 (Gradle downloads one if it’s missing).
 ./gradlew assembleDebug        # debug APK
 ./gradlew testDebugUnitTest    # unit and Robolectric tests
 ```
-
-## Releasing
-
-1. Bump `versionName` and `versionCode` in `app/build.gradle.kts`.
-2. Tag `v<versionName>` and push the tag. The release workflow builds a signed APK and attaches
-   it to a GitHub Release.
-
-One-time signing setup:
-
-```bash
-keytool -genkeypair -v -keystore release.jks -keyalg RSA -keysize 4096 -validity 10000 -alias vpntile
-base64 -i release.jks | gh secret set SIGNING_KEYSTORE_BASE64
-gh secret set SIGNING_STORE_PASSWORD
-gh secret set SIGNING_KEY_ALIAS        # vpntile
-gh secret set SIGNING_KEY_PASSWORD
-```
-
-Keep `release.jks` out of the repo (it’s in `.gitignore`) and back it up: losing it means
-users can’t update in place.
 
 ## License
 
